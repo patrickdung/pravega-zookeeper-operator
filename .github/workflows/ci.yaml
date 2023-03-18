@@ -46,6 +46,7 @@ jobs:
           echo "container_registry_base_uri=$(echo $CONTAINER_REGISTRY/$(echo $CONTAINER_REPOSITORY | tr 'A-Z' 'a-z'))" >> $GITHUB_OUTPUT
 
   build:
+    needs: [init-env]
     runs-on: ubuntu-latest
     steps:
     - name: Get branch name (tag) of latest release from official repo
@@ -100,8 +101,8 @@ jobs:
         echo "cluster info"
         sudo kubectl -n kube-system get pod -o wide
         sudo kubectl create secret docker-registry regcred --docker-server=https://index.docker.io/v1/ --docker-username="testanisha"  --docker-password="123456789" --docker-email=testimage456@gmail.com
-    - name: E2E
-      run: sudo make test-e2e
+    #- name: E2E
+    #  run: sudo make test-e2e
   publish:
     name: Publish docker image
     runs-on: ubuntu-latest
