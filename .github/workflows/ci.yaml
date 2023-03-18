@@ -61,16 +61,7 @@ jobs:
       security-events: write
       statuses: none
       # id-token: 'read'
-    outputs:
-      remote_branch_name: ${{ steps.get-remote-branch-name.outputs.remote_branch_name }}
     steps:
-    - name: Get branch name (tag) of latest release from official repo
-      id: get-remote-branch-name
-      run: |
-        curl -sL https://api.github.com/repos/pravega/zookeeper-operator/releases | \
-          jq -r ".[].tag_name" | grep -v rc | sort -r -V | head -n 1 > /tmp/release-latest-branch-name
-        echo "REMOTE_BRANCH_NAME=$(cat /tmp/release-latest-branch-name)" >> $GITHUB_ENV
-        echo "remote_branch_name=$(cat /tmp/release-latest-branch-name)" >> $GITHUB_OUTPUT
     - name: Set up Go 1.17
       uses: actions/setup-go@v2
       with:
@@ -123,7 +114,29 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     #if: github.event_name == 'release' && github.event.action == 'created'
+    permissions:
+      actions: none
+      checks: none
+      contents: read
+      deployments: none
+      issues: none
+      packages: write
+      pull-requests: none
+      repository-projects: none
+      # GH action/scanners for sarif reports
+      security-events: write
+      statuses: none
+      # id-token: 'read'
+    outputs:
+      remote_branch_name: ${{ steps.get-remote-branch-name.outputs.remote_branch_name }}
     steps:
+    - name: Get branch name (tag) of latest release from official repo
+      id: get-remote-branch-name
+      run: |
+        curl -sL https://api.github.com/repos/pravega/zookeeper-operator/releases | \
+          jq -r ".[].tag_name" | grep -v rc | sort -r -V | head -n 1 > /tmp/release-latest-branch-name
+        echo "REMOTE_BRANCH_NAME=$(cat /tmp/release-latest-branch-name)" >> $GITHUB_ENV
+        echo "remote_branch_name=$(cat /tmp/release-latest-branch-name)" >> $GITHUB_OUTPUT
     - name: Check out code
       uses: actions/checkout@v3
     - name: Set up QEMU
