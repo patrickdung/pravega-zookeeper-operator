@@ -48,6 +48,21 @@ jobs:
   build:
     needs: [init-env]
     runs-on: ubuntu-latest
+    permissions:
+      actions: none
+      checks: none
+      contents: read
+      deployments: none
+      issues: none
+      packages: write
+      pull-requests: none
+      repository-projects: none
+      # GH action/scanners for sarif reports
+      security-events: write
+      statuses: none
+      # id-token: 'read'
+    outputs:
+      remote_branch_name: ${{ steps.get-remote-branch-name.outputs.remote_branch_name }}
     steps:
     - name: Get branch name (tag) of latest release from official repo
       id: get-remote-branch-name
