@@ -167,7 +167,7 @@ jobs:
       uses: docker/build-push-action@v3
       with:
         context: ./docker
-        file: ./Dockerfile
+        file: ./docker/Dockerfile
         build-args: |
           RELEASE_VERSION=${{ env.REMOTE_BRANCH_NAME }}
           LABEL_IMAGE_URL=${{ env.ORIGINAL_SOURCECODE_URL }}
