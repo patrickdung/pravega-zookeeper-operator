@@ -175,4 +175,4 @@ jobs:
         platforms: linux/arm64,linux/amd64
         push: true
         tags: |
-          pravega-zookeeper:${{ env.REMOTE_BRANCH_NAME }}
+          ${{ needs.init-env.outputs.container_registry_base_uri }}:pravega-zookeeper-${{ env.REMOTE_BRANCH_NAME }}
